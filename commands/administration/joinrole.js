@@ -31,7 +31,7 @@ module.exports = class joinroleCommand extends LenoxCommand {
 		for (let i = 0; i < margs.length; i++) {
 			if (validation.indexOf(margs[i].toLowerCase()) >= 0) {
 				if (margs[1].toLowerCase() === 'add') {
-					if (!args || args.length === 0) return msg.reply(lang.joinrole_noinput);
+					if (!args || !args.length) return msg.reply(lang.joinrole_noinput);
 					const mentionedRole = args.slice(1).join(' ');
 					const foundRole = msg.guild.roles.find(role => role.name.toLowerCase() === mentionedRole.toLowerCase());
 					if (!foundRole) return msg.reply(lang.joinrole_rolenotexist);
@@ -44,7 +44,7 @@ module.exports = class joinroleCommand extends LenoxCommand {
 
 					return msg.reply(lang.joinrole_roleadded);
 				} else if (margs[1].toLowerCase() === 'remove') {
-					if (!args || args.length === 0) return msg.reply(lang.joinrole_noinputremove);
+					if (!args || !args.length) return msg.reply(lang.joinrole_noinputremove);
 					const mentionedRole = args.slice(1).join(' ');
 					const foundRole = msg.guild.roles.find(role => role.name.toLowerCase() === mentionedRole.toLowerCase());
 					if (!foundRole) return msg.reply(lang.joinrole_rolenotexist);
@@ -58,7 +58,7 @@ module.exports = class joinroleCommand extends LenoxCommand {
 
 					return msg.reply(lang.joinrole_roleremoved);
 				} else if (margs[1].toLowerCase() === 'list') {
-					if (msg.client.provider.getGuild(msg.guild.id, 'joinroles').length === 0) return msg.reply(lang.joinrole_nojoinroles);
+					if (!msg.client.provider.getGuild(msg.guild.id, 'joinroles').length) return msg.reply(lang.joinrole_nojoinroles);
 
 					const joinroleEmbed = new Discord.MessageEmbed()
 						.setTimestamp()
@@ -74,7 +74,7 @@ module.exports = class joinroleCommand extends LenoxCommand {
 							await msg.client.provider.setGuild(msg.guild.id, 'joinroles', currentJoinroles);
 						}
 
-						if (msg.client.provider.getGuild(msg.guild.id, 'joinroles').length !== 0) {
+						if (msg.client.provider.getGuild(msg.guild.id, 'joinroles').length) {
 							const joinrole = msg.guild.roles.get(msg.client.provider.getGuild(msg.guild.id, 'joinroles')[index]);
 							arrayForEmbedDescription.push(`${joinrole.name} (${joinrole.id})`);
 						}
