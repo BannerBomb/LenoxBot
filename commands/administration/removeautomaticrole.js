@@ -28,7 +28,7 @@ module.exports = class removeautomaticroleCommand extends LenoxCommand {
 
 		const addedrole = args.slice().join(' ');
 
-		if (addedrole.length < 1) return msg.reply(lang.removeautomaticrole_noinput);
+		if (!addedrole.length) return msg.reply(lang.removeautomaticrole_noinput);
 
 		const roleinput = args.slice().join(' ');
 		const foundRole = msg.guild.roles.find(role => role.name.toLowerCase() === roleinput.toLowerCase());
