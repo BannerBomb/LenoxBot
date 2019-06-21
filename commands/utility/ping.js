@@ -10,18 +10,18 @@ module.exports = class pingCommand extends LenoxCommand {
 			format: 'ping',
 			aliases: [],
 			examples: ['ping'],
-			clientPermissions: ['SEND_MESSAGES'],
-			userPermissions: [],
+			clientpermissions: ['SEND_MESSAGES'],
+			userpermissions: [],
 			shortDescription: 'Information',
 			dashboardsettings: true
 		});
 	}
 
 	async run(msg) {
-		const langSet = msg.client.provider.get(msg.message.guild.id, 'language', 'en-US');
+		const langSet = msg.client.provider.getGuild(msg.message.guild.id, 'language');
 		const lang = require(`../../languages/${langSet}.json`);
 
-		const message = await msg.channel.send('Ping?');
+		const message = await msg.message.channel.send('Ping?');
 		const newmsg = lang.ping_ping.replace('%latency', message.createdTimestamp - msg.createdTimestamp).replace('%latencyapi', Math.round(msg.client.ping));
 		message.edit(newmsg);
 	}

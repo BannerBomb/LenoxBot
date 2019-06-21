@@ -1,8 +1,8 @@
-const Discord = require('discord.js');
 const mongodb = require('mongodb');
-const assert = require('assert');
 const Commando = require('discord.js-commando');
 const guildsettingskeys = require('../guildsettings-keys.json');
+const usersettingskeys = require('../usersettings-keys.json');
+const botsettingskeys = require('../botsettings-keys.json');
 
 class LenoxBotSettingsProvider extends Commando.SettingProvider {
 	constructor(settings) {
@@ -10,6 +10,8 @@ class LenoxBotSettingsProvider extends Commando.SettingProvider {
 		this.url = `mongodb://${encodeURIComponent(settings.db.user)}:${encodeURIComponent(settings.db.password)}@${encodeURIComponent(settings.db.host)}:${encodeURIComponent(settings.db.port)}/?authMechanism=DEFAULT&authSource=admin`;
 
 		this.guildSettings = new Map();
+		this.userSettings = new Map();
+		this.botSettings = new Map();
 		this.listeners = new Map();
 		this.isReady = false;
 	}
@@ -23,22 +25,29 @@ class LenoxBotSettingsProvider extends Commando.SettingProvider {
 			process.exit(-1);
 		}
 
+		this.client = client;
 		this.db = this.dbClient.db('lenoxbot');
-		const settingsCollection = this.db.collection('guildSettings');
+		const guildSettingsCollection = this.db.collection('guildSettings');
 		const guildSettings = this.guildSettings;
+		const userSettingsCollection = this.db.collection('userSettings');
+		const userSettings = this.userSettings;
+		const botSettingsCollection = this.db.collection('botSettings');
+		const botSettings = this.botSettings;
 
-		await settingsCollection.createIndex('guildId', { unique: true });
+		await guildSettingsCollection.createIndex('guildId', { unique: true });
+		await userSettingsCollection.createIndex('userId', { unique: true });
+		await botSettingsCollection.createIndex('botconfs', { unique: true });
 
 		/* eslint guard-for-in: 0 */
 		for (const guild in client.guilds.array()) {
 			try {
-				const result = await settingsCollection.findOne({ guildId: client.guilds.array()[guild].id });
+				const result = await guildSettingsCollection.findOne({ guildId: client.guilds.array()[guild].id });
 				let settings = undefined;
 
 				if (!result) {
 					// Can't find DB make new one.
 					settings = guildsettingskeys;
-					settingsCollection.insertOne({ guildId: client.guilds.array()[guild].id, settings: settings });
+					guildSettingsCollection.insertOne({ guildId: client.guilds.array()[guild].id, settings: settings });
 				}
 
 				if (result && result.settings) {
@@ -53,13 +62,13 @@ class LenoxBotSettingsProvider extends Commando.SettingProvider {
 		}
 
 		try {
-			const result = await settingsCollection.findOne({ guildId: 'global' });
+			const result = await guildSettingsCollection.findOne({ guildId: 'global' });
 			let settings = undefined;
 
 			if (!result) {
 				// Could not load global, do new one
 				settings = {};
-				settingsCollection.insertOne({ guildId: 'global', settings: settings });
+				guildSettingsCollection.insertOne({ guildId: 'global', settings: settings });
 				this.setupGuild('global', settings);
 			}
 
@@ -69,7 +78,89 @@ class LenoxBotSettingsProvider extends Commando.SettingProvider {
 
 			guildSettings.set('global', settings);
 		} catch (err) {
-			console.warn('Error while creating global document');
+			console.warn('Error while creating guild global document');
+			console.warn(err);
+		}
+
+		for (const user in client.users.array()) {
+			try {
+				const result = await userSettingsCollection.findOne({ userId: client.users.array()[user].id });
+				let settings = undefined;
+
+				if (!result) {
+					// Can't find DB make new one.
+					settings = usersettingskeys;
+					userSettingsCollection.insertOne({ userId: client.users.array()[user].id, settings: settings });
+				}
+
+				if (result && result.settings) {
+					settings = result.settings;
+				}
+
+				userSettings.set(client.users.array()[user].id, settings);
+			} catch (err) {
+				console.warn(`Error while creating document of user ${client.users.array()[user].id}`);
+				console.warn(err);
+			}
+		}
+
+		try {
+			const result = await userSettingsCollection.findOne({ userId: 'global' });
+			let settings = undefined;
+
+			if (!result) {
+				// Could not load global, do new one
+				settings = {};
+				userSettingsCollection.insertOne({ userId: 'global', settings: settings });
+			}
+
+			if (result && result.settings) {
+				settings = result.settings;
+			}
+
+			userSettings.set('global', settings);
+		} catch (err) {
+			console.warn('Error while creating user global document');
+			console.warn(err);
+		}
+
+		try {
+			const result = await botSettingsCollection.findOne({ botconfs: 'botconfs' });
+			let settings = undefined;
+
+			if (!result) {
+				// Can't find DB make new one.
+				settings = botsettingskeys;
+				botSettingsCollection.insertOne({ botconfs: 'botconfs', settings: settings });
+			}
+
+			if (result && result.settings) {
+				settings = result.settings;
+			}
+
+			botSettings.set('botconfs', settings);
+		} catch (err) {
+			console.warn(`Error while creating document of botconfs`);
+			console.warn(err);
+		}
+
+		try {
+			const result = await botSettingsCollection.findOne({ botconfs: 'global' });
+			let settings = undefined;
+
+			if (!result) {
+				// Could not load global, do new one
+				settings = {};
+				botSettingsCollection.insertOne({ botconfs: 'global', settings: settings });
+			}
+
+			if (result && result.settings) {
+				settings = result.settings;
+			}
+
+			botSettings.set('global', settings);
+		} catch (err) {
+			console.warn('Error while creating botconfsglobal document');
 			console.warn(err);
 		}
 
@@ -109,7 +200,72 @@ class LenoxBotSettingsProvider extends Commando.SettingProvider {
 		this.listeners.clear();
 	}
 
-	async set(guild, key, val) {
+	async fetchGuild(guildId, key) {
+		let settings = this.guildSettings.get(guildId);
+
+		if (!settings) {
+			const result = await this.db.collection('guildSettings').findOne({ guildId: guildId });
+
+			if (result && result.settings) {
+				settings = result.settings;
+			}
+		}
+
+		if (key) {
+			return settings[key];
+		}
+
+		return settings;
+	}
+
+	async fetchUser(userId, key) {
+		let settings = this.userSettings.get(userId);
+
+		if (!settings) {
+			const result = await this.db.collection('userSettings').findOne({ userId: userId });
+
+			if (result && result.settings) {
+				settings = result.settings;
+			}
+		}
+
+		if (key) {
+			return settings[key];
+		}
+
+		return settings;
+	}
+
+	async fetchBotSettings(index, key, key2) {
+		const result = await this.db.collection('botSettings').findOne({ botconfs: index });
+
+		let settings = undefined;
+
+		if (result && result.settings) {
+			settings = result.settings;
+		}
+
+		if (key && !key2) {
+			return settings[key];
+		}
+
+		if (key2) {
+			return settings[key][key2];
+		}
+		return settings;
+	}
+
+	async setGuildComplete(guild, val) {
+		guild = this.constructor.getGuildID(guild);
+		this.guildSettings.set(guild, val);
+
+		const settingsCollection = this.db.collection('guildSettings');
+
+		await settingsCollection.updateOne({ guildId: guild }, { $set: { settings: val } });
+		return val;
+	}
+
+	async setGuild(guild, key, val) {
 		guild = this.constructor.getGuildID(guild);
 		let settings = this.guildSettings.get(guild);
 		if (!settings) {
@@ -124,7 +280,7 @@ class LenoxBotSettingsProvider extends Commando.SettingProvider {
 		return val;
 	}
 
-	async remove(guild, key, val) {
+	async removeGuild(guild, key, val) {
 		guild = this.constructor.getGuildID(guild);
 		let settings = this.guildSettings.get(guild);
 		if (!settings) {
@@ -143,20 +299,167 @@ class LenoxBotSettingsProvider extends Commando.SettingProvider {
 		return val;
 	}
 
-
-	async clear(guild) {
+	async clearGuild(guild) {
 		guild = this.constructor.getGuildID(guild);
+
 		if (!this.settings.has(guild)) return;
+
 		this.settings.delete(guild);
 		const settingsCollection = this.db.collection('guildSettings');
-		await this.settingsCollection.deleteOne({
+		await settingsCollection.deleteOne({
 			guildId: guild
 		});
 	}
 
-	get(guild, key, defVal) {
+	getGuild(guild, key, defVal) {
 		const settings = this.guildSettings.get(this.constructor.getGuildID(guild));
 		return settings ? typeof settings[key] === 'undefined' ? defVal : settings[key] : defVal;
+	}
+
+	async setUserComplete(user, val) {
+		let settings = this.userSettings.get(user);
+		if (!settings) {
+			settings = {};
+			this.userSettings.set(user, settings);
+		}
+
+		const settingsCollection = this.db.collection('userSettings');
+
+		await settingsCollection.updateOne({ userId: user }, { $set: { settings: val } });
+		return val;
+	}
+
+	async setUser(user, key, val) {
+		let settings = this.userSettings.get(user);
+		if (!settings) {
+			settings = {};
+			this.userSettings.set(user, settings);
+		}
+
+		settings[key] = val;
+		const settingsCollection = this.db.collection('userSettings');
+
+		await settingsCollection.updateOne({ userId: user }, { $set: { settings: settings } });
+		return val;
+	}
+
+	async removeUser(user, key, val) {
+		let settings = this.userSettings.get(user);
+		if (!settings) {
+			settings = {};
+			this.userSettings.set(user, settings);
+		}
+
+		val = settings[key];
+		settings[key] = undefined;
+		const settingsCollection = this.db.collection('userSettings');
+
+		await settingsCollection.save({
+			userId: user,
+			settings: settings
+		});
+		return val;
+	}
+
+	async clearUser(user) {
+		if (!this.settings.has(user)) return;
+		this.settings.delete(user);
+		const settingsCollection = this.db.collection('userSettings');
+		await settingsCollection.deleteOne({
+			userId: user
+		});
+	}
+
+	getUser(user, key, defVal) {
+		const settings = this.userSettings.get(user);
+		return settings ? typeof settings[key] === 'undefined' ? defVal : settings[key] : defVal;
+	}
+
+	async setBotsettings(index, key, val) {
+		let settings = this.botSettings.get(index);
+		if (!settings) {
+			settings = {};
+		}
+
+		settings[key] = val;
+		const settingsCollection = this.db.collection('botSettings');
+
+		await settingsCollection.updateOne({ botconfs: index }, { $set: { settings: settings } });
+		return val;
+	}
+
+	async removeBotsettings(index, key, val) {
+		let settings = this.botSettings.get(index);
+		if (!settings) {
+			settings = {};
+		}
+
+		val = settings[key];
+		delete settings[key];
+		const settingsCollection = this.db.collection('botSettings');
+
+		await settingsCollection.updateOne({ botconfs: index }, { $set: { settings: settings } });
+		return val;
+	}
+
+
+	async clearBotsettings(index) {
+		const settingsCollection = this.db.collection('botSettings');
+		await settingsCollection.deleteOne({
+			botconfs: index
+		});
+	}
+
+	getBotsettings(index, key, defVal) {
+		const settings = this.botSettings.get(index);
+		return settings ? typeof settings[key] === 'undefined' ? defVal : settings[key] : defVal;
+	}
+
+	async reloadGuild(id) {
+		try {
+			const result = await this.db.collection('guildSettings').findOne({ guildId: id });
+			let settings = undefined;
+
+			if (!result) {
+				// Can't find DB make new one.
+				settings = guildsettingskeys;
+				await this.db.collection('guildSettings').insertOne({ guildId: id, settings: settings });
+			}
+
+			if (result && result.settings) {
+				settings = result.settings;
+			}
+
+			await this.db.collection('guildSettings').set(id, settings);
+			this.guildSettings.set(id, settings);
+		} catch (err) {
+			console.warn(`Error while creating document of guild ${id}`);
+			console.warn(err);
+		}
+	}
+
+	async reloadUser(id) {
+		if (this.client.users[id] !== undefined) {
+			try {
+				const result = await this.db.collection('userSettings').findOne({ userId: id });
+				let settings = undefined;
+
+				if (!result) {
+					// Can't find DB make new one.
+					settings = usersettingskeys;
+					await this.db.collection('userSettings').insertOne({ userId: id, settings: settings });
+				}
+
+				if (result && result.settings) {
+					settings = result.settings;
+				}
+
+				await this.db.collection('userSettings').set(id, settings);
+			} catch (err) {
+				console.warn(`Error while creating document of user ${id}`);
+				console.warn(err);
+			}
+		}
 	}
 
 	getDatabase() {

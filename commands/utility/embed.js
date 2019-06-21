@@ -11,15 +11,15 @@ module.exports = class embedCommand extends LenoxCommand {
 			format: 'embed {text}',
 			aliases: [],
 			examples: ['embed Welcome on this discord server! Here is a list of all rules on this discord server...'],
-			clientPermissions: ['SEND_MESSAGES'],
-			userPermissions: [],
+			clientpermissions: ['SEND_MESSAGES'],
+			userpermissions: [],
 			shortDescription: 'General',
 			dashboardsettings: true
 		});
 	}
 
 	run(msg) {
-		const langSet = msg.client.provider.get(msg.message.guild.id, 'language', 'en-US');
+		const langSet = msg.client.provider.getGuild(msg.message.guild.id, 'language');
 		const lang = require(`../../languages/${langSet}.json`);
 
 		const args = msg.content.split(' ').slice(1);

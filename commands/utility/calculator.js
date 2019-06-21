@@ -12,15 +12,15 @@ module.exports = class calculatorCommand extends LenoxCommand {
 			format: 'calculator {math equation}',
 			aliases: ['cal'],
 			examples: ['calculator 1*20', 'calculator 100/10', 'calculator 100+10', 'calculator 100-10'],
-			clientPermissions: ['SEND_MESSAGES'],
-			userPermissions: ['ADMINISTRATOR'],
+			clientpermissions: ['SEND_MESSAGES'],
+			userpermissions: [],
 			shortDescription: 'General',
 			dashboardsettings: true
 		});
 	}
 
 	run(msg) {
-		const langSet = msg.client.provider.get(msg.message.guild.id, 'language', 'en-US');
+		const langSet = msg.client.provider.getGuild(msg.message.guild.id, 'language');
 		const lang = require(`../../languages/${langSet}.json`);
 
 		const args = msg.content.split(' ').slice(1);

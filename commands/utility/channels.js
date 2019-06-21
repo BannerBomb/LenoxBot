@@ -11,15 +11,15 @@ module.exports = class channelsCommand extends LenoxCommand {
 			format: 'channels',
 			aliases: [],
 			examples: ['channels'],
-			clientPermissions: ['SEND_MESSAGES'],
-			userPermissions: ['ADMINISTRATOR'],
+			clientpermissions: ['SEND_MESSAGES'],
+			userpermissions: ['ADMINISTRATOR'],
 			shortDescription: 'Information',
 			dashboardsettings: true
 		});
 	}
 
 	async run(msg) {
-		const langSet = msg.client.provider.get(msg.message.guild.id, 'language', 'en-US');
+		const langSet = msg.client.provider.getGuild(msg.message.guild.id, 'language');
 		const lang = require(`../../languages/${langSet}.json`);
 
 		if (msg.guild.channels.filter(textChannel => textChannel.type === `text`).array().length > 0) {
