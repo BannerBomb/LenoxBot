@@ -37,8 +37,8 @@ module.exports = class listmodulesCommand extends LenoxCommand {
 			}
 		}
 
-		embed.addField(lang.listmodules_activemodules, activatedmodules.length === 0 ? lang.listmodules_noactivemodules : activatedmodules.join('\n'));
-		embed.addField(lang.listmodules_disabledmodules, disabledmodules.length === 0 ? lang.listmodules_nodisabledmodules : disabledmodules.join('\n'));
+		embed.addField(lang.listmodules_activemodules, !activatedmodules.length ? lang.listmodules_noactivemodules : activatedmodules.join('\n'));
+		embed.addField(lang.listmodules_disabledmodules, !disabledmodules.length ? lang.listmodules_nodisabledmodules : disabledmodules.join('\n'));
 
 		msg.channel.send({ embed });
 	}
