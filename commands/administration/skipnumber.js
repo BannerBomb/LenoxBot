@@ -30,10 +30,10 @@ module.exports = class skipnumberCommand extends LenoxCommand {
 
 		const currentvotenumber = lang.skipnumber_currentvotenumber.replace('%skipnumber', `\`${msg.client.provider.getGuild(msg.guild.id, 'skipnumber')}\``);
 
-		if (number.length === 0) return msg.channel.send(currentvotenumber);
+		if (!number.length) return msg.channel.send(currentvotenumber);
 		if (number.length > 1) return msg.channel.send(lang.skipnumber_error);
 		if (isNaN(number)) return msg.channel.send(lang.skipnumber_noinput);
-		if (number < 1) return msg.channel.send(lang.skipnumber_cannotbe0);
+		if (!number) return msg.channel.send(lang.skipnumber_cannotbe0);
 
 		await msg.client.provider.setGuild(msg.guild.id, 'skipnumber', number);
 
