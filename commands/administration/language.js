@@ -29,7 +29,7 @@ module.exports = class languageCommand extends LenoxCommand {
 		const already = lang.language_already.replace('%language', `\`${input[0]}\``);
 		const changed = lang.language_changed.replace('%input', `\`${input[0]}\``);
 
-		if (!input || input.length === 0) return msg.reply(lang.language_noinput);
+		if (!input || !input.length) return msg.reply(lang.language_noinput);
 
 		for (let i = 0; i < margs.length; i++) {
 			if (validation.indexOf(margs[i].toLowerCase()) >= 0) {
