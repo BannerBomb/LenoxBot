@@ -27,7 +27,7 @@ module.exports = class prefixCommand extends LenoxCommand {
 
 		const currentprefix = lang.prefix_currentprefix.replace('%prefix', prefix);
 
-		if (newprefix.length === 0) return msg.channel.send(currentprefix);
+		if (!newprefix.length) return msg.channel.send(currentprefix);
 		if (newprefix.length > 1) return msg.channel.send(lang.prefix_error);
 
 		let currentPrefix = msg.client.provider.getGuild(msg.guild.id, 'prefix');
