@@ -58,7 +58,7 @@ module.exports = class lootCommand extends LenoxCommand {
 			delete timestamps.loot[msg.author.id];
 			await msg.client.provider.setBotsettings('botconfs', 'cooldowns', timestamps);
 			return msg.reply(inventoryfull);
-		} else if (inventoryslotcheck + 1 >= msg.client.provider.getUser(msg.author.id, 'inventoryslots') && msg.client.provider.getUser(msg.author.id, 'premium').status === true) {
+		} else if (inventoryslotcheck + 1 >= msg.client.provider.getUser(msg.author.id, 'inventoryslots') && msg.client.provider.getUser(msg.author.id, 'premium').status) {
 			const timestamps = msg.client.provider.getBotsettings('botconfs', 'cooldowns');
 			delete timestamps.loot[msg.author.id];
 			await msg.client.provider.setBotsettings('botconfs', 'cooldowns', timestamps);
@@ -75,7 +75,7 @@ module.exports = class lootCommand extends LenoxCommand {
 			currentCredits += creditsloot;
 			await msg.client.provider.setUser(msg.author.id, 'credits', currentCredits);
 
-			if (msg.client.provider.getUser(msg.author.id, 'premium').status === true) {
+			if (msg.client.provider.getUser(msg.author.id, 'premium').status) {
 				const currentItems = msg.client.provider.getUser(msg.author.id, 'inventory');
 				currentItems[validationfor10procent[result]] += 2;
 				await msg.client.provider.setUser(msg.author.id, 'inventory', currentItems);
@@ -100,7 +100,7 @@ module.exports = class lootCommand extends LenoxCommand {
 			await msg.client.provider.setUser(msg.author.id, 'credits', currentCredits);
 
 
-			if (msg.client.provider.getUser(msg.author.id, 'premium').status === true) {
+			if (msg.client.provider.getUser(msg.author.id, 'premium').status) {
 				const currentItems = msg.client.provider.getUser(msg.author.id, 'inventory');
 				currentItems[validationfor30procent[result]] += 2;
 				await msg.client.provider.setUser(msg.author.id, 'inventory', currentItems);
@@ -126,7 +126,7 @@ module.exports = class lootCommand extends LenoxCommand {
 			await msg.client.provider.setUser(msg.author.id, 'credits', currentCredits);
 
 
-			if (msg.client.provider.getUser(msg.author.id, 'premium').status === true) {
+			if (msg.client.provider.getUser(msg.author.id, 'premium').status) {
 				const currentItems = msg.client.provider.getUser(msg.author.id, 'inventory');
 				currentItems[validationfor50procent[result]] += 2;
 				await msg.client.provider.setUser(msg.author.id, 'inventory', currentItems);
@@ -152,7 +152,7 @@ module.exports = class lootCommand extends LenoxCommand {
 			await msg.client.provider.setUser(msg.author.id, 'credits', currentCredits);
 
 
-			if (msg.client.provider.getUser(msg.author.id, 'premium').status === true) {
+			if (msg.client.provider.getUser(msg.author.id, 'premium').status) {
 				const currentItems = msg.client.provider.getUser(msg.author.id, 'inventory');
 				currentItems[validationforrest[result]] += 2;
 				await msg.client.provider.setUser(msg.author.id, 'inventory', currentItems);

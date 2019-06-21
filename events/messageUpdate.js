@@ -27,7 +27,7 @@ exports.run = async (client, oldMsg, newMsg) => {
 		}
 	}
 	const input = newMsg.content.split(' ').slice();
-	if (client.provider.getGuild(newMsg.guild.id, 'chatfilter').chatfilter === 'true' && client.provider.getGuild(newMsg.guild.id, 'chatfilter').array.length !== 0) {
+	if (client.provider.getGuild(newMsg.guild.id, 'chatfilter').chatfilter === 'true' && client.provider.getGuild(newMsg.guild.id, 'chatfilter').array.length) {
 		for (let i = 0; i < client.provider.getGuild(newMsg.guild.id, 'chatfilter').array.length; i++) {
 			for (let index = 0; index < input.length; index++) {
 				if (input[index].toLowerCase() === client.provider.getGuild(newMsg.guild.id, 'chatfilter').array[i].toLowerCase()) {

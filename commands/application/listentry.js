@@ -51,7 +51,7 @@ module.exports = class listentryCommand extends LenoxCommand {
 			const reactionadd = templates.slice(first + 10, second + 10).length;
 			const reactionremove = templates.slice(first - 10, second - 10).length;
 
-			if (r.emoji.name === '▶' && reactionadd !== 0) {
+			if (r.emoji.name === '▶' && reactionadd) {
 				r.remove(msg.author.id);
 
 				first += 10;
@@ -65,7 +65,7 @@ module.exports = class listentryCommand extends LenoxCommand {
 				message.edit({
 					embed: newembed
 				});
-			} else if (r.emoji.name === '◀' && reactionremove !== 0) {
+			} else if (r.emoji.name === '◀' && reactionremove) {
 				r.remove(msg.author.id);
 
 				first -= 10;

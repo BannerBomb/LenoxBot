@@ -146,7 +146,7 @@ module.exports = class playlistCommand extends LenoxCommand {
 					const noplaylistaddedyet = lang.playlist_noplaylistaddedyet.replace('%prefix', prefix);
 					if (Object.keys(msg.client.provider.getGuild(msg.message.guild.id, 'playlist')).length === 0) return msg.reply(noplaylistaddedyet);
 
-					if (args.slice(1).length !== 0 && args.slice(1) !== '') {
+					if (args.slice(1).length && args.slice(1) !== '') {
 						const input = args.slice(1);
 
 						if (!msg.client.provider.getGuild(msg.message.guild.id, 'playlist')[input.join(' ').toLowerCase()]) return msg.reply(lang.playlist_playlistnotexist);

@@ -29,7 +29,7 @@ module.exports = class serverinfoCommand extends LenoxCommand {
 		const servercreated = moment(msg.guild.createdAt).format('MMMM Do YYYY, h:mm:ss a');
 
 		const emojis = [];
-		if (msg.guild.emojis.size !== 0) {
+		if (msg.guild.emojis.size) {
 			msg.guild.emojis.forEach(r => {
 				const emoji = msg.client.emojis.get(r.id);
 				emojis.push(emoji);

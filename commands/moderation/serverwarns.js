@@ -56,7 +56,7 @@ module.exports = class serverwarnsCommand extends LenoxCommand {
 		collector.on('collect', r => {
 			const reactionadd = firstfield.slice(first + 5, second + 5).length;
 			const reactionremove = firstfield.slice(first - 5, second - 5).length;
-			if (r.emoji.name === '▶' && reactionadd !== 0) {
+			if (r.emoji.name === '▶' && reactionadd) {
 				r.remove(msg.author.id);
 				const thefirst = firstfield.slice(first + 5, second + 5);
 				const thesecond = secondfield.slice(first + 5, second + 5);
@@ -71,7 +71,7 @@ module.exports = class serverwarnsCommand extends LenoxCommand {
 				message.edit({
 					embed: newembed
 				});
-			} else if (r.emoji.name === '◀' && reactionremove !== 0) {
+			} else if (r.emoji.name === '◀' && reactionremove) {
 				r.remove(msg.author.id);
 				const thefirst = firstfield.slice(first - 5, second - 5);
 				const thesecond = secondfield.slice(first - 5, second - 5);

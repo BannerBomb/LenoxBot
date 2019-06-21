@@ -25,7 +25,7 @@ module.exports = class jobCommand extends LenoxCommand {
 		const langSet = msg.client.provider.getGuild(msg.message.guild.id, 'language');
 		const lang = require(`../../languages/${langSet}.json`);
 
-		if (msg.client.provider.getUser(msg.author.id, 'jobstatus') === true) {
+		if (msg.client.provider.getUser(msg.author.id, 'jobstatus')) {
 			const timestamps = msg.client.provider.getBotsettings('botconfs', 'cooldowns');
 			delete timestamps.job[msg.author.id];
 			await msg.client.provider.setBotsettings('botconfs', 'cooldowns', timestamps);
@@ -88,7 +88,7 @@ module.exports = class jobCommand extends LenoxCommand {
 				const reactionadd = arrayOfJobs.slice(firsttext + 10, secondtext + 10).length;
 				const reactionremove = arrayOfJobs.slice(firsttext - 10, secondtext - 10).length;
 
-				if (r.emoji.name === '▶' && reactionadd !== 0) {
+				if (r.emoji.name === '▶' && reactionadd) {
 					r.remove(msg.author.id);
 
 					firsttext += 10;
@@ -106,7 +106,7 @@ module.exports = class jobCommand extends LenoxCommand {
 					});
 
 					jobsMessage.edit({ embed: newEmbed });
-				} else if (r.emoji.name === '◀' && reactionremove !== 0) {
+				} else if (r.emoji.name === '◀' && reactionremove) {
 					r.remove(msg.author.id);
 
 					firsttext -= 10;
@@ -197,7 +197,7 @@ module.exports = class jobCommand extends LenoxCommand {
 			.setColor('AQUA')
 			.setFooter('JOB STARTED')
 			.setTimestamp();
-		if (msg.client.provider.getBotsettings('botconfs', 'activity') === true) {
+		if (msg.client.provider.getBotsettings('botconfs', 'activity')) {
 			const messagechannel = msg.client.channels.get(msg.client.provider.getBotsettings('botconfs', 'activitychannel'));
 			messagechannel.send({
 				embed: activityEmbed
@@ -228,7 +228,7 @@ module.exports = class jobCommand extends LenoxCommand {
 				.setColor('AQUA')
 				.setFooter('JOB FINISHED')
 				.setTimestamp();
-			if (msg.client.provider.getBotsettings('botconfs', 'activity') === true) {
+			if (msg.client.provider.getBotsettings('botconfs', 'activity')) {
 				const messagechannel = msg.client.channels.get(msg.client.provider.getBotsettings('botconfs', 'activitychannel'));
 				messagechannel.send({
 					embed: activityEmbed2

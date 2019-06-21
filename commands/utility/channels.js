@@ -47,7 +47,7 @@ module.exports = class channelsCommand extends LenoxCommand {
 					const reactionadd = msg.guild.channels.filter(textChannel => textChannel.type === `text`).array().slice(firsttext + 15, secondtext + 15).length;
 					const reactionremove = msg.guild.channels.filter(textChannel => textChannel.type === `text`).array().slice(firsttext - 15, secondtext - 15).length;
 
-					if (r.emoji.name === '▶' && reactionadd !== 0) {
+					if (r.emoji.name === '▶' && reactionadd) {
 						r.remove(msg.author.id);
 						const guildchannels = msg.guild.channels.filter(textChannel => textChannel.type === `text`).array().slice(firsttext + 15, secondtext + 15)
 							.map(textchannel => `**#${textchannel.name}** (*${textchannel.id}*)`);
@@ -62,7 +62,7 @@ module.exports = class channelsCommand extends LenoxCommand {
 						textchannels.edit({
 							embed: newembed
 						});
-					} else if (r.emoji.name === '◀' && reactionremove !== 0) {
+					} else if (r.emoji.name === '◀' && reactionremove) {
 						r.remove(msg.author.id);
 						const guildchannels = msg.guild.channels.filter(textChannel => textChannel.type === `text`).array().slice(firsttext - 15, secondtext - 15)
 							.map(textchannel => `**#${textchannel.name}** (*${textchannel.id}*)`);
@@ -113,7 +113,7 @@ module.exports = class channelsCommand extends LenoxCommand {
 					const reactionadd = msg.guild.channels.filter(textChannel => textChannel.type === `voice`).array().slice(firstvoice + 15, secondvoice + 15).length;
 					const reactionremove = msg.guild.channels.filter(textChannel => textChannel.type === `voice`).array().slice(firstvoice - 15, secondvoice - 15).length;
 
-					if (r.emoji.name === '▶' && reactionadd !== 0) {
+					if (r.emoji.name === '▶' && reactionadd) {
 						r.remove(msg.author.id);
 						const guildchannels = msg.guild.channels.filter(textChannel => textChannel.type === `voice`).array().slice(firstvoice + 15, secondvoice + 15)
 							.map(textchannel => `**#${textchannel.name}** (*${textchannel.id}*)`);
@@ -128,7 +128,7 @@ module.exports = class channelsCommand extends LenoxCommand {
 						voicechannels.edit({
 							embed: newembed
 						});
-					} else if (r.emoji.name === '◀' && reactionremove !== 0) {
+					} else if (r.emoji.name === '◀' && reactionremove) {
 						r.remove(msg.author.id);
 						const guildchannels = msg.guild.channels.filter(textChannel => textChannel.type === `voice`).array().slice(firstvoice - 15, secondvoice - 15)
 							.map(textchannel => `**#${textchannel.name}** (*${textchannel.id}*)`);

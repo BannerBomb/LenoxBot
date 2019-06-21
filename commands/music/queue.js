@@ -52,7 +52,7 @@ module.exports = class queueCommand extends LenoxCommand {
 				const reactionadd = serverQueue.songs.slice(first + 15, second + 15).length;
 				const reactionremove = serverQueue.songs.slice(first - 15, second - 15).length;
 
-				if (r.emoji.name === '▶' && reactionadd !== 0) {
+				if (r.emoji.name === '▶' && reactionadd) {
 					r.remove(msg.author.id);
 
 					first += 15;
@@ -68,7 +68,7 @@ module.exports = class queueCommand extends LenoxCommand {
 					message.edit({
 						embed: newEmbed
 					});
-				} else if (r.emoji.name === '◀' && reactionremove !== 0) {
+				} else if (r.emoji.name === '◀' && reactionremove) {
 					r.remove(msg.author.id);
 
 					first -= 15;

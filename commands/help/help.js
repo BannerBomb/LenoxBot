@@ -48,14 +48,14 @@ module.exports = class helpCommand extends LenoxCommand {
 			if (command.groupID === 'staff' && !msg.member.roles.get('386627285119402006')) return msg.channel.send(lang.botownercommands_error);
 
 			const aliases = [];
-			if (command.aliases.length !== 0) {
+			if (command.aliases.length) {
 				for (let i = 0; i < command.aliases.length; i++) {
 					aliases.push(`${prefix}${command.aliases[i]}`);
 				}
 			}
 
 			const examples = [];
-			if (command.examples.length !== 0) {
+			if (command.examples.length) {
 				for (let i = 0; i < command.examples.length; i++) {
 					examples.push(`${prefix}${command.examples[i]}`);
 				}
@@ -83,14 +83,14 @@ module.exports = class helpCommand extends LenoxCommand {
 					if (command.groupID === 'staff' && !msg.member.roles.get('386627285119402006')) return msg.channel.send(lang.botownercommands_error);
 
 					const aliases = [];
-					if (command.aliases.length !== 0) {
+					if (command.aliases.length) {
 						for (let i = 0; i < command.aliases.length; i++) {
 							aliases.push(`${prefix}${command.aliases[i]}`);
 						}
 					}
 
 					const examples = [];
-					if (command.examples.length !== 0) {
+					if (command.examples.length) {
 						for (let i = 0; i < command.examples.length; i++) {
 							examples.push(`${prefix}${command.examples[i]}`);
 						}

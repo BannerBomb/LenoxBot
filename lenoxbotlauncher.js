@@ -110,7 +110,7 @@ async function run() {
 		const islenoxbot = [];
 		if (req.user) {
 			for (let i = 0; i < req.user.guilds.length; i++) {
-				if (((req.user.guilds[i].permissions) & 8) === 8 && req.user.guilds[i].lenoxbot === true) {
+				if (((req.user.guilds[i].permissions) & 8) === 8 && req.user.guilds[i].lenoxbot) {
 					islenoxbot.push(req.user.guilds[i]);
 				}
 			}
@@ -131,7 +131,7 @@ async function run() {
 					req.user.guilds[i].lenoxbot = false;
 				}
 
-				if (req.user.guilds[i].lenoxbot === true) {
+				if (req.user.guilds[i].lenoxbot) {
 					islenoxbotNonPerm.push(req.user.guilds[i]);
 				}
 			}
@@ -539,7 +539,7 @@ async function run() {
 					if (userdb.settings.inventory[i] === 0) {
 						check++;
 					}
-					if (userdb.settings.inventory[i] !== 0) {
+					if (userdb.settings.inventory[i]) {
 						const itemSettings = {
 							emoji: marketconfs[i][0],
 							amount: userdb.settings.inventory[i],
@@ -642,7 +642,7 @@ async function run() {
 			try {
 				const validation = ['administration', 'help', 'music', 'fun', 'searches', 'nsfw', 'utility', 'moderation', 'application', 'currency', 'tickets'];
 
-				const commandlist = client.commands.filter(c => validation.includes(c.help.category) && c.conf.enabled === true).array();
+				const commandlist = client.commands.filter(c => validation.includes(c.help.category) && c.conf.enabled).array();
 				const newcommandlist = [];
 				commandlist.map(cmd => {
 					const lang = require('./languages/en-US.json');
@@ -799,7 +799,7 @@ async function run() {
 									await guildSettingsCollection.updateOne({ guildId: dashboardid }, { $set: { settings: fetchedGuild.settings } });
 								}
 
-								if (fetchedGuild.settings.dashboardpermissionroles.length !== 0 && guildResult[guildCheckIndex].ownerID !== req.user.id) {
+								if (fetchedGuild.settings.dashboardpermissionroles.length && guildResult[guildCheckIndex].ownerID !== req.user.id) {
 									let allwhitelistedrolesoftheuser = 0;
 
 									for (let index2 = 0; index2 < fetchedGuild.settings.dashboardpermissionroles.length; index2++) {
@@ -811,7 +811,7 @@ async function run() {
 									if (allwhitelistedrolesoftheuser !== fetchedGuild.settings.dashboardpermissionroles.length) {
 										req.user.guilds[i].lenoxbot = guildCheck ? true : false;
 
-										if (req.user.guilds[i].lenoxbot === true) {
+										if (req.user.guilds[i].lenoxbot) {
 											req.user.guilds[i].memberscount = guildResult[guildCheckIndex].memberCount;
 										}
 										check.push(req.user.guilds[i]);
@@ -819,7 +819,7 @@ async function run() {
 								} else if (((req.user.guilds[i].permissions) & 8) === 8) {
 									req.user.guilds[i].lenoxbot = guildCheck ? true : false;
 
-									if (req.user.guilds[i].lenoxbot === true) {
+									if (req.user.guilds[i].lenoxbot) {
 										req.user.guilds[i].memberscount = guildResult[guildCheckIndex].memberCount;
 									}
 
@@ -828,7 +828,7 @@ async function run() {
 							} else if (((req.user.guilds[i].permissions) & 8) === 8) {
 								req.user.guilds[i].lenoxbot = guildCheck ? true : false;
 
-								if (req.user.guilds[i].lenoxbot === true) {
+								if (req.user.guilds[i].lenoxbot) {
 									req.user.guilds[i].memberscount = guildResult[guildCheckIndex].memberCount;
 								}
 
@@ -880,7 +880,7 @@ async function run() {
 
 					client.botconfs.set('botconfs', botconfs);
 
-					if (client.guildconfs.get(ticket.guildid) && client.guildconfs.get(ticket.guildid).tickets.status === true) {
+					if (client.guildconfs.get(ticket.guildid) && client.guildconfs.get(ticket.guildid).tickets.status) {
 						const tableload = client.guildconfs.get(ticket.guildid);
 						const lang = require(`./languages/${tableload.language}.json`);
 
@@ -1112,7 +1112,7 @@ async function run() {
 						client.guildconfs.set(dashboardid, guildsettingskeys);
 					}
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -1192,7 +1192,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -1260,7 +1260,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -1338,7 +1338,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -1411,7 +1411,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -1476,7 +1476,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -1541,7 +1541,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -1606,7 +1606,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -1671,7 +1671,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -1736,7 +1736,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -1801,7 +1801,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -1866,7 +1866,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -1932,7 +1932,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -2005,7 +2005,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -2075,7 +2075,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -2145,7 +2145,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -2216,7 +2216,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -2279,7 +2279,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -2342,7 +2342,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -2424,7 +2424,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -2493,7 +2493,7 @@ async function run() {
 						}
 					}
 
-					const commands = client.commands.filter(r => r.help.category === 'administration' && r.conf.dashboardsettings === true).array();
+					const commands = client.commands.filter(r => r.help.category === 'administration' && r.conf.dashboardsettings).array();
 					for (let i = 0; i < commands.length; i++) {
 						const englishstrings = require('./languages/en-US.json');
 						commands[i].help.description = englishstrings[`${commands[i].help.name}_description`];
@@ -2741,7 +2741,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -2814,7 +2814,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -2887,7 +2887,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -2924,7 +2924,7 @@ async function run() {
 
 					const tableload = client.guildconfs.get(dashboardid);
 
-					const commands = client.commands.filter(r => r.help.category === 'moderation' && r.conf.dashboardsettings === true).array();
+					const commands = client.commands.filter(r => r.help.category === 'moderation' && r.conf.dashboardsettings).array();
 					for (let i = 0; i < commands.length; i++) {
 						const englishstrings = require('./languages/en-US.json');
 						commands[i].help.description = englishstrings[`${commands[i].help.name}_description`];
@@ -2992,7 +2992,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -3029,7 +3029,7 @@ async function run() {
 
 					const tableload = client.guildconfs.get(dashboardid);
 
-					const commands = client.commands.filter(r => r.help.category === 'help' && r.conf.dashboardsettings === true).array();
+					const commands = client.commands.filter(r => r.help.category === 'help' && r.conf.dashboardsettings).array();
 					for (let i = 0; i < commands.length; i++) {
 						const englishstrings = require('./languages/en-US.json');
 						commands[i].help.description = englishstrings[`${commands[i].help.name}_description`];
@@ -3085,7 +3085,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -3158,7 +3158,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -3179,7 +3179,7 @@ async function run() {
 					const serverQueue = client.queue.get(dashboardid);
 
 					if (req.body.newmusicaction === 'play') {
-						if (serverQueue.playing === true) {
+						if (serverQueue.playing) {
 							serverQueue.playing = false;
 							serverQueue.connection.dispatcher.pause();
 						} else {
@@ -3225,7 +3225,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -3270,7 +3270,7 @@ async function run() {
 						}
 					}
 
-					const commands = client.commands.filter(r => r.help.category === 'music' && r.conf.dashboardsettings === true).array();
+					const commands = client.commands.filter(r => r.help.category === 'music' && r.conf.dashboardsettings).array();
 					for (let i = 0; i < commands.length; i++) {
 						const englishstrings = require('./languages/en-US.json');
 						commands[i].help.description = englishstrings[`${commands[i].help.name}_description`];
@@ -3329,7 +3329,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -3366,7 +3366,7 @@ async function run() {
 
 					const tableload = client.guildconfs.get(dashboardid);
 
-					const commands = client.commands.filter(r => r.help.category === 'fun' && r.conf.dashboardsettings === true).array();
+					const commands = client.commands.filter(r => r.help.category === 'fun' && r.conf.dashboardsettings).array();
 					for (let i = 0; i < commands.length; i++) {
 						const englishstrings = require('./languages/en-US.json');
 						commands[i].help.description = englishstrings[`${commands[i].help.name}_description`];
@@ -3422,7 +3422,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -3459,7 +3459,7 @@ async function run() {
 
 					const tableload = client.guildconfs.get(dashboardid);
 
-					const commands = client.commands.filter(r => r.help.category === 'searches' && r.conf.dashboardsettings === true).array();
+					const commands = client.commands.filter(r => r.help.category === 'searches' && r.conf.dashboardsettings).array();
 					for (let i = 0; i < commands.length; i++) {
 						const englishstrings = require('./languages/en-US.json');
 						commands[i].help.description = englishstrings[`${commands[i].help.name}_description`];
@@ -3515,7 +3515,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -3552,7 +3552,7 @@ async function run() {
 
 					const tableload = client.guildconfs.get(dashboardid);
 
-					const commands = client.commands.filter(r => r.help.category === 'nsfw' && r.conf.dashboardsettings === true).array();
+					const commands = client.commands.filter(r => r.help.category === 'nsfw' && r.conf.dashboardsettings).array();
 					for (let i = 0; i < commands.length; i++) {
 						const englishstrings = require('./languages/en-US.json');
 						commands[i].help.description = englishstrings[`${commands[i].help.name}_description`];
@@ -3608,7 +3608,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -3705,7 +3705,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -3742,7 +3742,7 @@ async function run() {
 
 					const tableload = client.guildconfs.get(dashboardid);
 
-					const commands = client.commands.filter(r => r.help.category === 'utility' && r.conf.dashboardsettings === true).array();
+					const commands = client.commands.filter(r => r.help.category === 'utility' && r.conf.dashboardsettings).array();
 					for (let i = 0; i < commands.length; i++) {
 						const englishstrings = require('./languages/en-US.json');
 						commands[i].help.description = englishstrings[`${commands[i].help.name}_description`];
@@ -4069,7 +4069,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -4134,7 +4134,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -4199,7 +4199,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -4267,7 +4267,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -4335,7 +4335,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -4401,7 +4401,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -4467,7 +4467,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -4531,7 +4531,7 @@ async function run() {
 						}
 					}
 
-					const commands = client.commands.filter(r => r.help.category === 'application' && r.conf.dashboardsettings === true).array();
+					const commands = client.commands.filter(r => r.help.category === 'application' && r.conf.dashboardsettings).array();
 					for (let i = 0; i < commands.length; i++) {
 						const englishstrings = require('./languages/en-US.json');
 						commands[i].help.description = englishstrings[`${commands[i].help.name}_description`];
@@ -4585,7 +4585,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -4622,7 +4622,7 @@ async function run() {
 
 					const tableload = client.guildconfs.get(dashboardid);
 
-					const commands = client.commands.filter(r => r.help.category === 'currency' && r.conf.dashboardsettings === true).array();
+					const commands = client.commands.filter(r => r.help.category === 'currency' && r.conf.dashboardsettings).array();
 					for (let i = 0; i < commands.length; i++) {
 						const englishstrings = require('./languages/en-US.json');
 						commands[i].help.description = englishstrings[`${commands[i].help.name}_description`];
@@ -4935,7 +4935,7 @@ async function run() {
 					}
 
 					const tableload = client.guildconfs.get(dashboardid);
-					const commands = client.commands.filter(r => r.help.category === 'tickets' && r.conf.dashboardsettings === true).array();
+					const commands = client.commands.filter(r => r.help.category === 'tickets' && r.conf.dashboardsettings).array();
 					for (let i = 0; i < commands.length; i++) {
 						const englishstrings = require('./languages/en-US.json');
 						commands[i].help.description = englishstrings[`${commands[i].help.name}_description`];
@@ -4994,7 +4994,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -5061,7 +5061,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -5128,7 +5128,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -5202,7 +5202,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -5308,7 +5308,7 @@ async function run() {
 					const check = req.user.guilds[index];
 
 					const tableload = client.guildconfs.get(dashboardid);
-					const commands = client.commands.filter(r => r.help.category === 'customcommands' && r.conf.dashboardsettings === true).array();
+					const commands = client.commands.filter(r => r.help.category === 'customcommands' && r.conf.dashboardsettings).array();
 					for (let i = 0; i < commands.length; i++) {
 						const englishstrings = require('./languages/en-US.json');
 						commands[i].help.description = englishstrings[`${commands[i].help.name}_description`];
@@ -5380,7 +5380,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -5444,7 +5444,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -5529,7 +5529,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -5637,7 +5637,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {
@@ -5701,7 +5701,7 @@ async function run() {
 
 					if (index === -1) return res.redirect('/servers');
 
-					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length !== 0 && client.guilds.get(dashboardid).ownerID !== req.user.id) {
+					if (client.guildconfs.get(dashboardid).dashboardpermissionroles.length && client.guilds.get(dashboardid).ownerID !== req.user.id) {
 						let allwhitelistedrolesoftheuser = 0;
 
 						for (let index2 = 0; index2 < client.guildconfs.get(dashboardid).dashboardpermissionroles.length; index2++) {

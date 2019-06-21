@@ -74,7 +74,7 @@ module.exports = class inventoryCommand extends LenoxCommand {
 
 			const error = lang.inventory_error.replace('%prefix', prefix);
 			if (check === Object.keys(msg.client.provider.getUser(msg.author.id, 'inventory')).length) return msg.reply(error);
-			if (msg.client.provider.getUser(msg.author.id, 'inventory')[i] !== 0) {
+			if (msg.client.provider.getUser(msg.author.id, 'inventory')[i]) {
 				array1.push(`${msg.client.provider.getBotsettings('botconfs', 'market')[i][0]} ${msg.client.provider.getUser(msg.author.id, 'inventory')[i]}x ${lang[`loot_${i}`]}`);
 				array2.push(`**${lang.inventory_price}** 📥 $${msg.client.provider.getBotsettings('botconfs', 'market')[i][1]} 📤 $${msg.client.provider.getBotsettings('botconfs', 'market')[i][2]}`);
 			}
@@ -113,7 +113,7 @@ module.exports = class inventoryCommand extends LenoxCommand {
 			const reactionadd = array1.slice(firsttext + 7, secondtext + 7).length;
 			const reactionremove = array1.slice(firsttext - 7, secondtext - 7).length;
 
-			if (r.emoji.name === '▶' && reactionadd !== 0) {
+			if (r.emoji.name === '▶' && reactionadd) {
 				r.remove(msg.author.id);
 				const embedaddfield1 = array1.slice(firsttext + 7, secondtext + 7);
 				const embedaddfield2 = array2.slice(firsttext + 7, secondtext + 7);
@@ -133,7 +133,7 @@ module.exports = class inventoryCommand extends LenoxCommand {
 				message.edit({
 					embed: newembed
 				});
-			} else if (r.emoji.name === '◀' && reactionremove !== 0) {
+			} else if (r.emoji.name === '◀' && reactionremove) {
 				r.remove(msg.author.id);
 				const embedaddfield1 = array1.slice(firsttext - 7, secondtext - 7);
 				const embedaddfield2 = array2.slice(firsttext - 7, secondtext - 7);

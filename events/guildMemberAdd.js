@@ -28,7 +28,7 @@ exports.run = async (client, member) => {
 	// Joinroles that a guildMember will get when it joins the discord server
 	const rolesGiven = [];
 	const rolesNotGiven = [];
-	if (client.provider.getGuild(member.guild.id, 'joinroles') && client.provider.getGuild(member.guild.id, 'joinroles').length !== 0) {
+	if (client.provider.getGuild(member.guild.id, 'joinroles') && client.provider.getGuild(member.guild.id, 'joinroles').length) {
 		for (let i = 0; i < client.provider.getGuild(member.guild.id, 'joinroles').length; i++) {
 			if (!member.guild.roles.get(client.provider.getGuild(member.guild.id, 'joinroles')[i])) {
 				const indexOfTheRole = client.provider.getGuild(member.guild.id, 'joinroles').indexOf(client.provider.getGuild(member.guild.id, 'joinroles')[i]);
@@ -37,7 +37,7 @@ exports.run = async (client, member) => {
 				await client.provider.setGuild(member.guild.id, 'joinroles', currentJoinroles);
 			}
 
-			if (client.provider.getGuild(member.guild.id, 'joinroles').length !== 0) {
+			if (client.provider.getGuild(member.guild.id, 'joinroles').length) {
 				const roleToAssign = member.guild.roles.get(client.provider.getGuild(member.guild.id, 'joinroles')[i]);
 				try {
 					await member.addRole(roleToAssign);
@@ -47,7 +47,7 @@ exports.run = async (client, member) => {
 				}
 			}
 		}
-		if (rolesNotGiven.length !== 0) {
+		if (rolesNotGiven.length) {
 			const joinrolesnotgiven = lang.guildmemberaddevent_joinrolesnotgiven.replace('%roles', rolesNotGiven.join(', '));
 			member.send(joinrolesnotgiven);
 		}

@@ -33,7 +33,7 @@ module.exports = class currentlymutedCommand extends LenoxCommand {
 
 		if (mutesOfThisServer.length === 0) return msg.reply(lang.currentlymuted_error);
 
-		if (args.slice().length !== 0) {
+		if (args.slice().length) {
 			let user = msg.mentions.users.first();
 			if (!user) {
 				try {
@@ -107,7 +107,7 @@ module.exports = class currentlymutedCommand extends LenoxCommand {
 				const reactionadd = mutesOfThisServer.slice(first + 4, second + 4).length;
 				const reactionremove = mutesOfThisServer.slice(first - 4, second - 4).length;
 
-				if (r.emoji.name === '▶' && reactionadd !== 0) {
+				if (r.emoji.name === '▶' && reactionadd) {
 					r.remove(msg.author.id);
 
 					first += 4;
@@ -135,7 +135,7 @@ module.exports = class currentlymutedCommand extends LenoxCommand {
 					message.edit({
 						embed: newembed
 					});
-				} else if (r.emoji.name === '◀' && reactionremove !== 0) {
+				} else if (r.emoji.name === '◀' && reactionremove) {
 					r.remove(msg.author.id);
 
 					first -= 4;

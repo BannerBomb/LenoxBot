@@ -74,7 +74,7 @@ module.exports = class joinroleCommand extends LenoxCommand {
 							await msg.client.provider.setGuild(msg.message.guild.id, 'joinroles', currentJoinroles);
 						}
 
-						if (msg.client.provider.getGuild(msg.message.guild.id, 'joinroles').length !== 0) {
+						if (msg.client.provider.getGuild(msg.message.guild.id, 'joinroles').length) {
 							const joinrole = msg.guild.roles.get(msg.client.provider.getGuild(msg.message.guild.id, 'joinroles')[index]);
 							arrayForEmbedDescription.push(`${joinrole.name} (${joinrole.id})`);
 						}

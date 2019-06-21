@@ -107,7 +107,7 @@ if (process.env.SHARD_COUNT) {
 		if (client.registry.commands.has(command)) {
 			botCommandExists = true;
 			cmd = client.registry.commands.get(command);
-		} else if (alias === true) {
+		} else if (alias) {
 			botCommandExists = true;
 			cmd = aliasCommand;
 		} else if (customcommandstatus && customcommand.enabled) {
@@ -133,7 +133,7 @@ if (process.env.SHARD_COUNT) {
 
 		const blackbanlist = client.provider.getBotsettings('botconfs', 'blacklist');
 		const banlist = client.provider.getBotsettings('botconfs', 'banlist');
-		if (banlist.length !== 0) {
+		if (banlist.length) {
 			for (let i = 0; i < banlist.length; i++) {
 				if (msg.message.guild.id === banlist[i].discordServerID) {
 					banlistembed.addField(lang.messageevent_banlistreason, banlist[i].reason);
@@ -144,7 +144,7 @@ if (process.env.SHARD_COUNT) {
 				}
 			}
 		}
-		if (blackbanlist.length !== 0) {
+		if (blackbanlist.length) {
 			for (let i = 0; i < blackbanlist.length; i++) {
 				if (msg.author.id === blackbanlist[i].userID) {
 					blacklistembed.addField(lang.messageevent_blacklistreason, blackbanlist[i].reason);
@@ -163,7 +163,7 @@ if (process.env.SHARD_COUNT) {
 			.addField('Channel', `${msg.channel.name} (${msg.channel.id})`)
 			.setColor('#ff99ff')
 			.setTimestamp();
-		if (client.provider.getBotsettings('botconfs', 'activity') === true) {
+		if (client.provider.getBotsettings('botconfs', 'activity')) {
 			const messagechannel = client.channels.get(client.provider.getBotsettings('botconfs', 'activitychannel'));
 			messagechannel.send({
 				embed: activityembed

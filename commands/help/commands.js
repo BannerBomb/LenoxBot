@@ -75,7 +75,7 @@ module.exports = class commandsCommand extends LenoxCommand {
 							const reactionadd = commandShortDescriptions.slice(first + 7, second + 7).length;
 							const reactionremove = commandShortDescriptions.slice(first - 7, second - 7).length;
 
-							if (r.emoji.name === '▶' && reactionadd !== 0) {
+							if (r.emoji.name === '▶' && reactionadd) {
 								r.remove(msg.author.id);
 								const newCommandShortDescriptions = commandShortDescriptions.slice(first + 7, second + 7);
 								const newEmbed = new Discord.RichEmbed()
@@ -92,7 +92,7 @@ module.exports = class commandsCommand extends LenoxCommand {
 								message.edit({
 									embed: newEmbed
 								});
-							} else if (r.emoji.name === '◀' && reactionremove !== 0) {
+							} else if (r.emoji.name === '◀' && reactionremove) {
 								r.remove(msg.author.id);
 								const newCommandShortDescriptions = commandShortDescriptions.slice(first - 7, second - 7);
 								const newEmbed = new Discord.RichEmbed()

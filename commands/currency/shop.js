@@ -82,7 +82,7 @@ module.exports = class shopCommand extends LenoxCommand {
 				const reactionadd = array1.slice(firsttext + 14, secondtext + 14).length;
 				const reactionremove = array1.slice(firsttext - 14, secondtext - 14).length;
 
-				if (r.emoji.name === '▶' && reactionadd !== 0) {
+				if (r.emoji.name === '▶' && reactionadd) {
 					r.remove(msg.author.id);
 					const embedaddfield1 = array1.slice(firsttext + 14, secondtext + 14);
 					const embedaddfield2 = array2.slice(firsttext + 14, secondtext + 14);
@@ -103,7 +103,7 @@ module.exports = class shopCommand extends LenoxCommand {
 					message.edit({
 						embed: newembed
 					});
-				} else if (r.emoji.name === '◀' && reactionremove !== 0) {
+				} else if (r.emoji.name === '◀' && reactionremove) {
 					r.remove(msg.author.id);
 					const embedaddfield1 = array1.slice(firsttext - 14, secondtext - 14);
 					const embedaddfield2 = array2.slice(firsttext - 14, secondtext - 14);
@@ -146,7 +146,7 @@ module.exports = class shopCommand extends LenoxCommand {
 
 						const allitemsininventory = [];
 						for (let xx = 0; xx < nameOfTheItems.length; xx++) {
-							if (msg.client.provider.getUser(msg.author.id, 'inventory')[nameOfTheItems[xx]] !== 0) {
+							if (msg.client.provider.getUser(msg.author.id, 'inventory')[nameOfTheItems[xx]]) {
 								allitemsininventory.push([xx, msg.client.provider.getUser(msg.author.id, 'inventory')[nameOfTheItems[xx]], msg.client.provider.getBotsettings('botconfs', 'market')[nameOfTheItems[xx]][0], msg.client.provider.getBotsettings('botconfs', 'market')[nameOfTheItems[xx]][2], nameOfTheItems[xx]]);
 							}
 						}

@@ -41,7 +41,7 @@ module.exports = class togglexpCommand extends LenoxCommand {
 					}
 					if (channel.type !== 'text') return msg.reply(lang.togglexp_notextchannel);
 
-					if (msg.client.provider.getGuild(msg.message.guild.id, 'togglexp').channelids.length !== 0) {
+					if (msg.client.provider.getGuild(msg.message.guild.id, 'togglexp').channelids.length) {
 						for (let index = 0; index < msg.client.provider.getGuild(msg.message.guild.id, 'togglexp').channelids.length; index++) {
 							if (msg.client.provider.getGuild(msg.message.guild.id, 'togglexp').channelids[index] === channel.id) return msg.reply(lang.togglexp_alreadyadd);
 						}

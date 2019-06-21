@@ -36,7 +36,7 @@ module.exports = class currentlybannedCommand extends LenoxCommand {
 
 		if (bansOfThisServer.length === 0) return msg.reply(lang.currentlybanned_error);
 
-		if (args.slice().length !== 0) {
+		if (args.slice().length) {
 			fetchedUser = msg.mentions.users.first();
 			if (!fetchedUser) {
 				try {
@@ -112,7 +112,7 @@ module.exports = class currentlybannedCommand extends LenoxCommand {
 				const reactionadd = bansOfThisServer.slice(first + 4, second + 4).length;
 				const reactionremove = bansOfThisServer.slice(first - 4, second - 4).length;
 
-				if (r.emoji.name === '▶' && reactionadd !== 0) {
+				if (r.emoji.name === '▶' && reactionadd) {
 					r.remove(msg.author.id);
 
 					first += 4;
@@ -140,7 +140,7 @@ module.exports = class currentlybannedCommand extends LenoxCommand {
 					message.edit({
 						embed: newembed
 					});
-				} else if (r.emoji.name === '◀' && reactionremove !== 0) {
+				} else if (r.emoji.name === '◀' && reactionremove) {
 					r.remove(msg.author.id);
 
 					first -= 4;

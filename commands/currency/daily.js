@@ -24,7 +24,7 @@ module.exports = class dailyCommand extends LenoxCommand {
 		const lang = require(`../../languages/${langSet}.json`);
 		const mentioncheck = msg.mentions.users.first();
 
-		if (msg.client.provider.getUser(msg.author.id, 'dailyremind') === true) {
+		if (msg.client.provider.getUser(msg.author.id, 'dailyremind')) {
 			const dailyreminder = {
 				userID: msg.author.id,
 				remind: Date.now() + 86400000
@@ -64,7 +64,7 @@ module.exports = class dailyCommand extends LenoxCommand {
 		if (!mentioncheck) {
 			let currentCredits = msg.client.provider.getUser(msg.author.id, 'credits');
 			const currentDailystreak = msg.client.provider.getUser(msg.author.id, 'dailystreak');
-			if (msg.client.provider.getUser(msg.author.id, 'premium').status === true) {
+			if (msg.client.provider.getUser(msg.author.id, 'premium').status) {
 				await msg.client.provider.setUser(msg.author.id, 'credits', (currentCredits += 400 + (currentDailystreak.streak * 2)));
 			} else {
 				await msg.client.provider.setUser(msg.author.id, 'credits', (currentCredits += 200 + (currentDailystreak.streak * 2)));
@@ -82,7 +82,7 @@ module.exports = class dailyCommand extends LenoxCommand {
 				.setAuthor(`🎁 ${author} 🎁`)
 				.setDescription(`${streak}`);
 
-			if (msg.client.provider.getUser(msg.author.id, 'dailyremind') === true) {
+			if (msg.client.provider.getUser(msg.author.id, 'dailyremind')) {
 				return msg.channel.send({
 					embed: remindEmbed
 				});
@@ -94,7 +94,7 @@ module.exports = class dailyCommand extends LenoxCommand {
 
 		let currentCredits = msg.client.provider.getUser(msg.author.id, 'credits');
 		const currentDailystreak = msg.client.provider.getUser(msg.author.id, 'dailystreak').streak;
-		if (msg.client.provider.getUser(msg.author.id, 'premium').status === true) {
+		if (msg.client.provider.getUser(msg.author.id, 'premium').status) {
 			await msg.client.provider.setUser(mentioncheck.id, 'credits', (currentCredits += 400 + (currentDailystreak * 2)));
 		} else {
 			await msg.client.provider.setUser(mentioncheck.id, 'credits', (currentCredits += 200 + (currentDailystreak * 2)));
@@ -112,7 +112,7 @@ module.exports = class dailyCommand extends LenoxCommand {
 			.setAuthor(`🎁 ${mention} 🎁`)
 			.setDescription(`${streak}`);
 
-		if (msg.client.provider.getUser(msg.author.id, 'dailyremind') === true) {
+		if (msg.client.provider.getUser(msg.author.id, 'dailyremind')) {
 			return msg.channel.send({
 				embed: remindEmbed
 			});

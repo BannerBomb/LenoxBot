@@ -65,7 +65,7 @@ module.exports = class nicknamelogCommand extends LenoxCommand {
 			const reactionadd = oldnickname.slice(first + 20, second + 20).length;
 			const reactionremove = oldnickname.slice(first - 20, second - 20).length;
 
-			if (r.emoji.name === '▶' && reactionadd !== 0) {
+			if (r.emoji.name === '▶' && reactionadd) {
 				const newDateArray = dateArray.slice(first + 20, second + 20);
 				const newOldNickname = oldnickname.slice(first + 20, second + 20);
 				const newNewNickname = newnickname.slice(first + 20, second + 20);
@@ -83,7 +83,7 @@ module.exports = class nicknamelogCommand extends LenoxCommand {
 				message.edit({
 					embed: newembed
 				});
-			} else if (r.emoji.name === '◀' && reactionremove !== 0) {
+			} else if (r.emoji.name === '◀' && reactionremove) {
 				const newDateArray = dateArray.slice(first - 20, second - 20);
 				const newOldNickname = oldnickname.slice(first - 20, second - 20);
 				const newNewNickname = newnickname.slice(first - 20, second - 20);

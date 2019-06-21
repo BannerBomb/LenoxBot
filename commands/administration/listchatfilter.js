@@ -60,7 +60,7 @@ module.exports = class listchatfilterCommand extends LenoxCommand {
 				const reactionadd = array.slice(first + 15, second + 15).length;
 				const reactionremove = array.slice(first - 15, second - 15).length;
 
-				if (r.emoji.name === '▶' && reactionadd !== 0) {
+				if (r.emoji.name === '▶' && reactionadd) {
 					r.remove(msg.author.id);
 
 					first += 15;
@@ -74,7 +74,7 @@ module.exports = class listchatfilterCommand extends LenoxCommand {
 					message.edit({
 						embed: newembed
 					});
-				} else if (r.emoji.name === '◀' && reactionremove !== 0) {
+				} else if (r.emoji.name === '◀' && reactionremove) {
 					r.remove(msg.author.id);
 
 					first -= 15;

@@ -32,7 +32,7 @@ module.exports = class softbanCommand extends LenoxCommand {
 		if (!days[0]) return msg.reply(lang.softban_daysundefined);
 
 		const nonumber = lang.softban_nonumber.replace('%user', user.tag);
-		if (isNaN(days[0]) === true) return msg.reply(nonumber);
+		if (isNaN(days[0])) return msg.reply(nonumber);
 		if (parseInt(days[0], 10) < 1) return msg.reply(lang.softban_min1);
 		if (parseInt(days[0], 10) > 8) return msg.reply(lang.softban_max7);
 		if (!reason) return msg.reply(lang.softban_noinput);

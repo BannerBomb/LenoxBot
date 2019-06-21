@@ -52,7 +52,7 @@ exports.run = client => {
 			}
 
 			if (typeof client.provider.getBotsettings('botconfs', 'dailyreminder') !== 'undefined') {
-				if (Object.keys(client.provider.getBotsettings('botconfs', 'dailyreminder')).length !== 0) {
+				if (Object.keys(client.provider.getBotsettings('botconfs', 'dailyreminder')).length) {
 					/* eslint guard-for-in: 0 */
 					for (const index in client.provider.getBotsettings('botconfs', 'dailyreminder')) {
 						const timeoutTime = client.provider.getBotsettings('botconfs', 'dailyreminder')[index].remind - Date.now();
@@ -84,7 +84,7 @@ exports.run = client => {
 						.setColor('AQUA')
 						.setFooter('JOB FINISHED')
 						.setTimestamp();
-					if (client.provider.getBotsettings('botconfs', 'activity') === true) {
+					if (client.provider.getBotsettings('botconfs', 'activity')) {
 						const messagechannel = client.channels.get(client.provider.getBotsettings('botconfs', 'activitychannel'));
 						messagechannel.send({
 							embed: activityEmbed2
@@ -94,7 +94,7 @@ exports.run = client => {
 			}
 
 			if (typeof client.provider.getBotsettings('botconfs', 'jobreminder') !== 'undefined') {
-				if (Object.keys(client.provider.getBotsettings('botconfs', 'jobreminder')).length !== 0) {
+				if (Object.keys(client.provider.getBotsettings('botconfs', 'jobreminder')).length) {
 					/* eslint guard-for-in: 0 */
 					for (const index in client.provider.getBotsettings('botconfs', 'jobreminder')) {
 						const timeoutTime = client.provider.getBotsettings('botconfs', 'jobreminder')[index].remind - Date.now();
@@ -183,7 +183,7 @@ exports.run = client => {
 			}
 
 			if (typeof client.provider.getBotsettings('botconfs', 'bans') !== 'undefined') {
-				if (Object.keys(client.provider.getBotsettings('botconfs', 'bans')).length !== 0) {
+				if (Object.keys(client.provider.getBotsettings('botconfs', 'bans')).length) {
 					for (const index in client.provider.getBotsettings('botconfs', 'bans')) {
 						const newBanTime = client.provider.getBotsettings('botconfs', 'bans')[index].banEndDate - Date.now();
 						const fetchedbans = await client.guilds.get(client.provider.getBotsettings('botconfs', 'bans')[index].discordserverid).fetchBans();
@@ -194,7 +194,7 @@ exports.run = client => {
 
 
 			if (typeof client.provider.getBotsettings('botconfs', 'mutes') !== 'undefined') {
-				if (Object.keys(client.provider.getBotsettings('botconfs', 'mutes')).length !== 0) {
+				if (Object.keys(client.provider.getBotsettings('botconfs', 'mutes')).length) {
 					for (const index2 in client.provider.getBotsettings('botconfs', 'mutes')) {
 						const newMuteTime = client.provider.getBotsettings('botconfs', 'mutes')[index2].muteEndDate - Date.now();
 						timeoutForMute(client.provider.getBotsettings('botconfs', 'mutes')[index2], newMuteTime);
@@ -204,7 +204,7 @@ exports.run = client => {
 			setInterval(() => {
 				client.guilds.filter(g => client.provider.getGuild(g.id, 'prefix')).forEach(async g => {
 					if (client.provider.getGuild(g.id, 'premium')) {
-						if (client.provider.getGuild(g.id, 'premium').status === true) {
+						if (client.provider.getGuild(g.id, 'premium').status) {
 							if (new Date().getTime() >= Date.parse(client.provider.get(g.id, 'premium').end)) {
 								const currentPremium = client.provider.getGuild(g.id, 'premium');
 								currentPremium.status = false;
@@ -220,7 +220,7 @@ exports.run = client => {
 			setInterval(() => {
 				client.users.filter(g => client.provider.getUser(g.id, 'credits')).forEach(async g => {
 					if (client.provider.getUser(g.id, 'premium')) {
-						if (client.userdb.get(g.id).premium.status === true) {
+						if (client.userdb.get(g.id).premium.status) {
 							if (new Date().getTime() >= Date.parse(client.provider.getUser(g.id, 'premium').end)) {
 								const currentPremium = client.provider.getUser(g.id, 'premium');
 								currentPremium.status = false;
