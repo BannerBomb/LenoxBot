@@ -22,7 +22,7 @@ module.exports = class togglecommandCommand extends LenoxCommand {
 		const lang = require(`../../languages/${langSet}.json`);
 		const args = msg.content.split(' ').slice(1);
 
-		if (args.slice().length === 0) return msg.reply(lang.togglecommand_noinput);
+		if (!args.slice().length) return msg.reply(lang.togglecommand_noinput);
 
 		/* eslint no-else-return: 0 */
 		for (const x in msg.client.provider.getGuild(msg.guild.id, 'commands')) {
