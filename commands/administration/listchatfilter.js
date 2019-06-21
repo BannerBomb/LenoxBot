@@ -31,7 +31,7 @@ module.exports = class listchatfilterCommand extends LenoxCommand {
 			});
 		}
 
-		if (msg.client.provider.getGuild(msg.guild.id, 'chatfilter').array.length === 0) return msg.channel.send(lang.listchatfilter_error);
+		if (!msg.client.provider.getGuild(msg.guild.id, 'chatfilter').array.length) return msg.channel.send(lang.listchatfilter_error);
 
 		const embed = new Discord.MessageEmbed()
 			.setColor('#ABCDEF');
@@ -60,7 +60,7 @@ module.exports = class listchatfilterCommand extends LenoxCommand {
 				const reactionadd = array.slice(first + 15, second + 15).length;
 				const reactionremove = array.slice(first - 15, second - 15).length;
 
-				if (r.emoji.name === '▶' && reactionadd !== 0) {
+				if (r.emoji.name === '▶' && reactionadd) {
 					r.users.remove(msg.author.id);
 
 					first += 15;
@@ -74,7 +74,7 @@ module.exports = class listchatfilterCommand extends LenoxCommand {
 					message.edit({
 						embed: newembed
 					});
-				} else if (r.emoji.name === '◀' && reactionremove !== 0) {
+				} else if (r.emoji.name === '◀' && reactionremove) {
 					r.users.remove(msg.author.id);
 
 					first -= 15;
