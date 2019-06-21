@@ -24,7 +24,7 @@ module.exports = class deactivatemoduleCommand extends LenoxCommand {
 		const args = msg.content.split(' ').slice(1);
 
 		const moduledeactivated = lang.deactivatemodule_moduledisabled.replace('%modulename', args.slice());
-		if (args.slice().length === 0) return msg.channel.send(lang.deactivatemodule_noinput);
+		if (!args.slice().length) return msg.channel.send(lang.deactivatemodule_noinput);
 		const margs = msg.content.split(' ');
 		const validation = ['administration', 'help', 'music', 'fun', 'searches', 'nsfw', 'utility', 'moderation', 'application', 'currency', 'partner', 'tickets', 'customcommands'];
 
