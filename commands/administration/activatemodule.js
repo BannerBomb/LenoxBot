@@ -23,7 +23,7 @@ module.exports = class activatemoduleCommand extends LenoxCommand {
 		const args = msg.content.split(' ').slice(1);
 
 		const moduleactivated = lang.activatemodule_moduleactivated.replace('%modulename', args.slice());
-		if (args.slice().length === 0) return msg.channel.send(lang.activatemodule_noinput);
+		if (!args.slice().length) return msg.channel.send(lang.activatemodule_noinput);
 		const margs = msg.content.split(' ');
 		const validation = ['administration', 'help', 'music', 'fun', 'searches', 'nsfw', 'utility', 'moderation', 'application', 'currency', 'partner', 'tickets', 'customcommands'];
 
