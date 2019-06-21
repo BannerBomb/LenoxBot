@@ -33,7 +33,7 @@ module.exports = class listmodulesCommand extends LenoxCommand {
 			if (msg.client.provider.getGuild(msg.guild.id, 'modules')[i] === 'false') {
 				disabledmodules.push(i);
 			} else {
-				activatedmodules.push(i);
+				activatedmodules.push(i);s
 			}
 		}
 
