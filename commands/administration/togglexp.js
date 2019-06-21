@@ -28,7 +28,7 @@ module.exports = class togglexpCommand extends LenoxCommand {
 		const input = args.slice();
 		let channel;
 
-		if (!input || input.length === 0) return msg.reply(lang.togglexp_noinput);
+		if (!input || !input.length) return msg.reply(lang.togglexp_noinput);
 
 		for (let i = 0; i < margs.length; i++) {
 			if (validation.indexOf(margs[i].toLowerCase()) >= 0) {
@@ -41,7 +41,7 @@ module.exports = class togglexpCommand extends LenoxCommand {
 					}
 					if (channel.type !== 'text') return msg.reply(lang.togglexp_notextchannel);
 
-					if (msg.client.provider.getGuild(msg.guild.id, 'togglexp').channelids.length !== 0) {
+					if (msg.client.provider.getGuild(msg.guild.id, 'togglexp').channelids.length) {
 						for (let index = 0; index < msg.client.provider.getGuild(msg.guild.id, 'togglexp').channelids.length; index++) {
 							if (msg.client.provider.getGuild(msg.guild.id, 'togglexp').channelids[index] === channel.id) return msg.reply(lang.togglexp_alreadyadd);
 						}
@@ -53,7 +53,7 @@ module.exports = class togglexpCommand extends LenoxCommand {
 					const add = lang.togglexp_add.replace('%channelname', channel.name);
 					return msg.reply(add);
 				} else if (margs[1].toLowerCase() === 'remove') {
-					if (msg.client.provider.getGuild(msg.guild.id, 'togglexp').channelids.length === 0) return msg.reply(lang.togglexp_nochannel);
+					if (!msg.client.provider.getGuild(msg.guild.id, 'togglexp').channelids.length) return msg.reply(lang.togglexp_nochannel);
 
 					let channel2;
 					try {
@@ -76,7 +76,7 @@ module.exports = class togglexpCommand extends LenoxCommand {
 					}
 					return msg.reply(lang.togglexp_notinthelist);
 				} else if (margs[1].toLowerCase() === 'list') {
-					if (msg.client.provider.getGuild(msg.guild.id, 'togglexp').channelids.length === 0) return msg.reply(lang.togglexp_nochannel);
+					if (!msg.client.provider.getGuild(msg.guild.id, 'togglexp').channelids.length) return msg.reply(lang.togglexp_nochannel);
 
 					const array = [];
 
