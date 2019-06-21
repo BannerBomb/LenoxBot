@@ -24,7 +24,7 @@ module.exports = class setchanneltopicCommand extends LenoxCommand {
 
 		const input = args.slice();
 
-		if (input.length === 0) return msg.channel.send(lang.setchanneltopic_error);
+		if (!input.length) return msg.channel.send(lang.setchanneltopic_error);
 
 		await msg.channel.setTopic(input.join(' '));
 
